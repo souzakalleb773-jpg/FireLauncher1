@@ -132,7 +132,7 @@ class MainActivity : Activity() {
     }
     private val weatherTick = object : Runnable { override fun run() { loadWeather(); h.postDelayed(this, 30 * 60 * 1000L) } }
 
-    private fun bg() = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; scaleX = 1.15; scaleY = 1.15 }
+    private fun bg() = ImageView(this).apply { scaleType = ImageView.ScaleType.CENTER_CROP; scaleX = 1.15f; scaleY = 1.15f }
     private fun round(c: Int, r: Int) = GradientDrawable().apply { setColor(c); cornerRadius = dp(r).toFloat() }
 
     // Papéis de parede: coloque .jpg/.png em Android/data/com.meu.launcher/files/wallpapers/
@@ -153,7 +153,7 @@ class MainActivity : Activity() {
     }
 
     private fun nextWall() {
-        if (walls.size < 2 && front.not()) return
+        if (walls.size < 2) return
         wallIdx = (wallIdx + 1) % walls.size
         val inV = if (front) bgB else bgA; val outV = if (front) bgA else bgB
         inV.setImageDrawable(walls[wallIdx]); drift(inV)
@@ -200,7 +200,6 @@ class MainActivity : Activity() {
                 vh.img.background = round(if (f) 0xCCFFFFFF.toInt() else 0x55FFFFFF, 16)
                 if (f) {
                     title.animate().alpha(0f).setDuration(90).withEndAction { title.text = a.label; title.animate().alpha(1f).setDuration(200).start() }.start()
-                    bgA.parent.let { (bgA).translationX = bgA.translationX; }
                     val shift = -(i % 6) * dp(8).toFloat()   // parallax acompanha a coluna selecionada
                     bgA.animate().translationX(shift).setDuration(400).start(); bgB.animate().translationX(shift).setDuration(400).start()
                 }
